@@ -3,6 +3,8 @@
  * but it will reload the page if it is done.
  *
  * Use without template
+ *
+ * Licence: Public domain
  */
 (function(){
     var ignore = document.getElementById("userlist_ignored");
