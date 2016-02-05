@@ -7,7 +7,7 @@
  * Licence: Public domain
  */
 [].forEach.call(
-    document.querySelectorAll('.hide-reposted-by,.icons.hidden'),
+    document.querySelectorAll('.hide-reposted-by,.icons.hidden,.date.hidden'),
     function (ele) {
         ele.classList.remove('hide-reposted-by');
         ele.classList.remove('hidden');
