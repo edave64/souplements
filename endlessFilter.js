@@ -21,6 +21,8 @@
  * These are probably easier on the servers.
  */
 (function () {
+    if (Ajax.Request._EndlessFilter) return;
+    
     var oldRequest = Ajax.Request;
 
     function getLoadAboveURL() {
@@ -59,6 +61,7 @@
 
         return oldRequest.apply(this, arguments);
     };
+    Ajax.Request._EndlessFilter = true;
     Ajax.Request.Events = oldRequest.Events;
     Ajax.Request.prototype = oldRequest.prototype;
 }());
