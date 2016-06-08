@@ -13,7 +13,7 @@
     var urlPart2 = ""; // part after the post-id
 
     // /friend/ or a /fof/ soup use since as a get parameter ?since=, otherwise, it is part of the path with /since/
-    if (location.pathname.match(/\/(friends|fof)/)) {
+    if (location.pathname.match(/\/(friends|fof|planet|followers|everyone)/)) {
         // ?since=
         var match = location.href.match(/([\?&])since=\d+/);
         if (match) {
