@@ -19,6 +19,8 @@
  *
  * Please keep in mind that soup already has some filters build in: http://faq.soup.io/post/4328678
  * These are probably easier on the servers.
+ *
+ * Licence: Public domain
  */
 (function () {
     if (Ajax.Request._EndlessFilter) return;
