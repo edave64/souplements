@@ -3,12 +3,10 @@
  * The basic idea is to allow filtering out posts before they are inserted into the dom, and thus before their assets
  * are loaded. This reduces stress on both the client and the asset servers.
  *
- * It uses an abandoned event system in Soup. This was apparently planed for something, but was never used.
- *
- * To use the filter, register the event "processBatch" in SOUP.Events.
+ * To use the filter, register the event "processBatch" in SOUP.Endless.
  * Example:
  *
- *     SOUP.Events.on("processBatch", function (doc) {
+ *     SOUP.Endless.on("processBatch", function (doc) {
  *         // your code here
  *     });
  *
@@ -21,8 +19,17 @@
  * These are probably easier on the servers.
  *
  * Licence: Public domain
+ *
+ * UPDATE 1.1:
+ * The soup event-api was used! I just used it wrong. It is supposed to be a template. The event is now fired on
+ * SOUP.Endless instead of SOUP.Events
  */
 (function () {
+    // Add events to SOUP.Endless
+    if (!SOUP.Endless.trigger) {
+        SOUP.tools.extend(SOUP.Endless, SOUP.Events);
+    }
+
     if (Ajax.Request._EndlessFilter) return;
     
     var oldRequest = Ajax.Request;
@@ -54,7 +61,7 @@
                 xmlDoc = parser.parseFromString(content, "text/html"),
                 root = xmlDoc.body;
 
-            SOUP.Events.trigger("processBatch", xmlDoc);
+            SOUP.Endless.trigger("processBatch", xmlDoc);
 
             response.responseText = nextPath + "|" + root.innerHTML;
 

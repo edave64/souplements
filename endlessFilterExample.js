@@ -19,7 +19,7 @@
     removeNonReactions(document);
 
     // Remove all future non reactions
-    SOUP.Events.on("processBatch", function (doc) {
+    SOUP.Endless.on("processBatch", function (doc) {
         removeNonReactions(doc);
     });
 }());
