@@ -23,6 +23,9 @@
  * UPDATE 1.1:
  * The soup event-api was used! I just used it wrong. It is supposed to be a template. The event is now fired on
  * SOUP.Endless instead of SOUP.Events
+ *
+ * UPDATE 1.2:
+ * Also trigger for loaded in reactions
  */
 (function () {
     // Add events to SOUP.Endless
@@ -31,7 +34,7 @@
     }
 
     if (Ajax.Request._EndlessFilter) return;
-    
+
     var oldRequest = Ajax.Request;
 
     function getLoadAboveURL() {
@@ -43,14 +46,7 @@
         return SOUP.Endless.next_url.replace(/&?newer=1&?/g, "");
     }
 
-    Ajax.Request = function (path, options) {
-        var aboveURL = getLoadAboveURL();
-        var belowURL = getLoadBelowURL();
-
-        if (path !== aboveURL && path !== belowURL) {
-            return oldRequest.apply(this, arguments);
-        }
-
+    function catchBatchLoad (path, options) {
         var oldSuccess = options.onSuccess;
         options.onSuccess = function (response) {
             var text = response.responseText,
@@ -61,6 +57,7 @@
                 xmlDoc = parser.parseFromString(content, "text/html"),
                 root = xmlDoc.body;
 
+            root.setAttribute("id", "posts");
             SOUP.Endless.trigger("processBatch", xmlDoc);
 
             response.responseText = nextPath + "|" + root.innerHTML;
@@ -68,6 +65,38 @@
             return oldSuccess.apply(this, arguments);
         };
 
+        return oldRequest.apply(this, arguments);
+    }
+
+    function catchPreviewLoad (path, options) {
+        var oldSuccess = options.onSuccess;
+        options.onSuccess = function (response) {
+            var content = response.responseText,
+                parser = new DOMParser(),
+                xmlDoc = parser.parseFromString(content, "text/html"),
+                root = xmlDoc.body;
+
+            root.setAttribute("id", "posts");
+            SOUP.Endless.trigger("processBatch", xmlDoc);
+
+            response.responseText = root.innerHTML;
+
+            return oldSuccess.apply(this, arguments);
+        };
+
+        return oldRequest.apply(this, arguments);
+    }
+
+    Ajax.Request = function (path, options) {
+        var aboveURL = getLoadAboveURL();
+        var belowURL = getLoadBelowURL();
+
+        if (path === aboveURL && path === belowURL) {
+            return catchBatchLoad.apply(this, arguments);
+        }
+        if (path.startsWith("http://" + document.location.host + "/preview/")) {
+            return catchPreviewLoad.apply(this, arguments);
+        }
         return oldRequest.apply(this, arguments);
     };
     Ajax.Request._EndlessFilter = true;
