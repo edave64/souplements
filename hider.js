@@ -229,5 +229,5 @@
 
     SOUP.Endless.on("processBatch", function (doc) {
         SOUP.Hider.applyFilters(doc);
-    })
+    });
 }());

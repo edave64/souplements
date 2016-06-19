@@ -39,7 +39,7 @@
 
     function getLoadAboveURL() {
         var url = $("endless_top_post").href;
-        return url.match(/[&?]newer=1/) ? url : url + (url.indexOf("?") >= 0 ? "&" : "?") + "newer=1"
+        return url.match(/[&?]newer=1/) ? url : url + (url.indexOf("?") >= 0 ? "&" : "?") + "newer=1";
     }
 
     function getLoadBelowURL() {
@@ -91,7 +91,7 @@
         var aboveURL = getLoadAboveURL();
         var belowURL = getLoadBelowURL();
 
-        if (path === aboveURL && path === belowURL) {
+        if (path === aboveURL || path === belowURL) {
             return catchBatchLoad.apply(this, arguments);
         }
         if (path.startsWith("http://" + document.location.host + "/preview/")) {
