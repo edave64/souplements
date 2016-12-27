@@ -1,5 +1,10 @@
 /**
+ * Replaces assets that fail to load with working alternatives.
  *
+ * Licence: Public domain
+ */
+
+/**
  * @param {Element} ele
  */
 function fixElement (ele) {
