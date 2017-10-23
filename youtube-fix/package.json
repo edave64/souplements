@@ -1,0 +1,28 @@
+{
+    "name": "soup-embed-fix",
+    "version": "0.1.0",
+
+    "dependencies": {
+        "media-embedder": "^0.2.2"
+    },
+    "devDependencies": {
+        "browserify": "^14.4.0",
+        "browserify-global-shim": "^1.0.3",
+        "google-closure-compiler-js": "^20170910.0.1"
+    },
+    
+    "browserify": {
+        "transform": [
+            "browserify-global-shim"
+        ]
+    },
+    "browserify-global-shim": {
+        "xmldom": "window"
+    },
+
+    "scripts": {
+        "browserify": "browserify index.js -o bundle.js",
+        "minify": "google-closure-compiler-js bundle.js --languageOut ES6 > minified.js",
+        "build": "browserify index.js | google-closure-compiler-js --languageOut ES6 > minified.js"
+    }
+}
