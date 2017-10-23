@@ -1,9 +1,2 @@
-.idea/.name
-.idea/misc.xml
-.idea/workspace.xml
-.idea/encodings.xml
-.idea/modules.xml
-.idea/souplements.iml
-.idea/dictionaries/david_000.xml
-.idea/typescript-compiler.xml
-.idea/vcs.xml
+.idea/
+node_modules/
