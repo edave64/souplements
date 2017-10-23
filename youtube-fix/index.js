@@ -5,9 +5,9 @@ if (!SOUP.EmbedFix) {
     SOUP.EmbedFix = true;
 
     function fixAll (doc) {
-        var video_posts = doc.getElementsByClassName("post_video");
+        var video_posts = [].slice.call(doc.getElementsByClassName("post_video"));
         
-        const firstPost = document.getElementsByClassName("post")[0];
+        const firstPost = document.querySelector(".post .content");
         let width = 500;
 
         if (firstPost) {
@@ -20,13 +20,12 @@ if (!SOUP.EmbedFix) {
             const embed = video_post.getElementsByClassName("embed")[0];
             if (embed.children.length === 0) {
                 const textarea = video_post.querySelector("[name='post[embedcode_or_url]']");
-                let mediaData = MediaEmbedder.detect(textarea.innerText);
+                // Turns out: Edge doesn't support innerText on DomParser elements. or something
+                let mediaData = MediaEmbedder.detect(textarea.childNodes[0] ? textarea.childNodes[0].nodeValue : "");
 
                 if (!mediaData) {
                     const description = video_post.getElementsByClassName("body")[0];
                     if (description) {
-                        mediaData.width = width;
-                        mediaData.height = height;
                         mediaData = MediaEmbedder.detect(description.innerHTML);
                     }
                 }
